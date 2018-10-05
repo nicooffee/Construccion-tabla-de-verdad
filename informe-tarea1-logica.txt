@@ -1,0 +1,163 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Topico     : Estilo de Informes - DMCC  
+% Autor      : Ruben Carvajal Schiaffino
+% Santiago de Chile, 13/9/2016
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+%
+\documentclass{report}
+%
+%
+\usepackage{courier}
+%
+\usepackage{epsfig}
+%
+\usepackage{pdfpages}
+%
+\renewcommand*\thesection{\arabic{section}}
+\newcommand \tab{\hspace*{25 pt}}
+\newcommand \minitab{\hspace*{15 pt}}
+%
+\begin{document}
+\begin{titlepage}
+\begin{center}
+\psfig{figure=Logo-2016.png,height=3cm,,}
+\end{center}
+\begin{center}
+{\bf Departamento de Matem\'atica y Ciencia de la Computaci\'on}
+\end{center}
+\vspace{3cm}
+\begin{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% MODIFICAR. Despues del tag \bf se coloca el titulo del trabajo
+%
+{\Large \bf Tarea 1 \\
+~~ \\
+Generador de tablas de verdad de una proposici\'on}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\end{center}
+\begin{center}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% MODIFICAR. Despues del tag \bf se coloca el semestre y año
+%
+{\large \bf Primer Semestre 2018}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\end{center}
+\vspace{5cm}
+\begin{tabular}{c l c}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% MODIFICAR. En el primer campo colocar el nombre de la asignatura y su codigo
+%            En el segundo campo colocar el nombre del autor
+%
+L\'ogica Computacional & Nicol\'as Honorato Droguett, Eduardo Baltra Rojas \\
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% MODIFICAR. En el primer campo colocar el nombre de la carrera
+%            En el segundo campo color direccion electronica
+%
+Licenciatura en Ciencia de la Computaci\'on & nicolas.honorato@usach.cl, eduardo.baltra@usach.cl
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\end{tabular}
+\end{titlepage}
+%
+\section{Introducci\'on}
+En este informe se da a conocer el desarrollo, an\'alisis e implentaci\'on de un algoritmo que, dada una o varias proposiciones l\'ogicas, pueda generar la tabla de verdad respectiva y poder dar una conclusi\'on sobre ella.
+\section{Objetivo}
+El trabajo en cuesti\'on tiene como objetivo crear e implementar un algoritmo que pueda ser capaz de transformar, dar formato y generar la tabla de verdad para una proposici\'on l\'ogica escrita en formato \LaTeX.
+%
+\section{Procedimiento}
+Dada una proposici\'on escrita en \LaTeX, esta se debe transformar a un formato m\'as simple. Luego, con la proposici\'on transformada, se le a\~naden los par\'entesis respectivos para respetar la prioridad de los operadores y dejar las expresiones de cada par\'entesis de la forma operando-operador-operando. 
+\newline
+\newline
+Finalmente, se genera la tabla de verdad y se da una conclusi\'on respecto a \'esta.
+\newline
+\newline
+Si los valores de la tabla son todos 0, se concluye que la proposici\'on es una contradicci\'on. Por el contrario, si la tabla se compone de solo valores 1, se concluye que la proposici\'on es una tautolog\'ia. En otro caso, se concluye que la proposici\'on es una contingencia.
+
+%
+\subsection{Consideraciones}
+
+\begin{itemize}
+\item Para la correcta ejecuci\'on del programa, los caracteres son case-sensitive, es decir, difieren estando en min\'uscula o may\'uscula.
+\item En el caso de las proposiciones que tengan un n\'umero de \'atomos mayor a 6, la tabla no podr\'a imprimirse, por lo que el programa solo mostrar\'a la conclusi\'on generada respecto a \'esta. Esto se debe a que la tabla es de tama\~no muy grande para ser mostrada por pantalla.
+\end{itemize}
+%
+
+%
+\subsection{Restricciones}
+\begin{itemize}
+\item Se asume que la proposici\'on viene escrita de una forma v\'alida para \LaTeX sin los signos \$ al principio y al final.
+\item Los caracteres que representen a los \'atomos proposicionales deben ser de tama\~no unitario y deben pertenecer al alfabeto ingl\'es.
+\item El programa no permite expresiones escritas en \LaTeX que contengas dos o más negaciones consecutivas.
+\end{itemize}
+%
+\section{Estructuras de Datos Utilizadas}
+La estructura utilizada corresponde a un \'arbol en el cual se guarda la proposici\'on, su tabla de valores de verdad y donde sus dos hijos son las sub-proposiciones que estan unidas al conectivo principal de la proposici\'on.
+\newline
+\texttt{
+struct Proposicion\{
+\newline
+\tab char *proposicion;
+\newline
+\tab unsigned int *valores;
+\newline
+\tab struct Proposicion *izq,*der;
+\newline
+\};
+}
+%
+\section{Algoritmo}
+El algoritmo se encarga de transformar la proposici\'on escrita en \LaTeX a una conveniente para el programa(se convierten los operadores escritos en \LaTeX a operadores unitarios). Luego, la cadena transformada, se pasa desde formato infix a postfix para luego transformarla nuevamente a infix pero con los par\'entesis correspondientes respetando la prioridad de los operadores, y de modo que en cada par\'entesis solo haya una proposici\'on de dos operandos y un operador. Ejemplo: $(p\land(q\lor r))$.
+\newline
+\newline
+Finalmente, teniendo la cadena transformada, se descompone recursivamente en un \'arbol sem\'antico en donde las hojas del \'arbol son los \'atomos proposicionales. 
+\newline
+%
+\subsection{An\'alisis de Complejidad}
+La ejecuci\'on de cada instancia de la funci\'on que construye el \'arbol sem\'antico tiene un coste de ejecuci\'on de O(n), donde n es la cantidad de combinaciones de la tabla de verdad.
+%
+\newpage
+\section{Implementaci\'on}
+El algoritmo est\'a implementado en lenguaje C, espec\'ificamente con el formato ANSI C.
+%
+\subsection{Plataforma Computacional}
+El programa fue ejecutado en un computador con las siguientes caracter\'isticas:
+\begin{itemize}
+\item {\bf Procesador:} Procesador Intel(R) Core(TM) i5-6500 CPU 3200MHz - 3600MHz.
+\item {\bf Memoria RAM:} 8192000 kiB
+\item {\bf Sistema Operativo:} Linux - Ubuntu 16.04.2 LTS
+\end{itemize}
+%
+\section{Resultados}
+La ejecuci\'on del programa, muestra que el algoritmo es capaz de procesar una proposici\'on con un m\'aximo de 26 \'atomos diferentes. Esto, visto de otra forma, significa que el algoritmo es capaz de procesar una tabla de verdad de tama\~no $2^{26}$ como m\'aximo. 
+\newline
+\newline
+En la siguiente figura se muestra el tiempo de ejecuci\'on de una proposici\'on con 26 sentencias diferentes.
+\newline
+\newline
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{figura-maximo-s.PNG}
+    \caption{Ejemplo proposici\'on 26 sentencias diferentes.}
+    \label{fig:fig1}
+\end{figure}
+\newpage
+%
+\section{Conclusi\'on}
+C\'omo s\'intesis, se puede concluir que el trabajo ha aportado a la habilidad de an\'alisis de problemas de los integrantes y al conocimiento de transformaci\'on de expresiones matem\'aticas a formatos infix y postfix. Adem\'as, el desarrollo de \'este algoritmo deja en claro que cada proposici\'on l\'ogica se puede tratar o expresar c\'omo un \'arbol en d\'onde cada nodo es una sub-proposici\'on de la proposici\'on principal.
+\end{document}

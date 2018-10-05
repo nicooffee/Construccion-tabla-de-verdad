@@ -1,0 +1,40 @@
+gcc tarea1.c -o tarea.out -lm
+
+Ejemplo 1: contingencia
+time ./tarea.out "p \land q"
+
+Ejemplo 2: contingencia
+time ./tarea.out "(p \land q) \lor r"
+
+Ejemplo 3: contingencia 
+time ./tarea.out "p \land q \land r"
+
+Ejemplo 4: contingencia
+time ./tarea.out "p \land q \lor r"
+
+Ejemplo 5: contingencia
+time ./tarea.out "p \lor q \land r"
+
+Ejemplo 6: or exclusivo
+time ./tarea.out "(\neg p\land q) \lor (p \land \neg q)"
+
+Ejemplo 7: contradicción
+time ./tarea.out "(p \land \neg p) \lor (q \land \neg q)"
+
+Ejemplo 8: tautología
+time ./tarea.out "(p\rightarrowq)\rightarrow(\negp \lor q)"
+
+Ejemplo 9: tautología
+time ./tarea.out "(p\rightarrowp) \lor (q \rightarrow q)"
+
+Ejemplo 10: contradicción
+time ./tarea.out "\neg((p \rightarrow q)\rightarrow(\negp \lor q))"
+
+Ejemplo 11: contingencia/negaciones innecesarias
+time ./tarea.out "\neg (\neg (p \lor q))"
+
+Ejemplo 12: contingencia/negaciones innecesarias
+time ./tarea.out "\neg (\neg (\neg (p \lor q)))" "\neg\neg(\neg (\neg (\neg (p \lor q))))"
+
+Ejemplo 13: conjunción de 26 sentencias
+time ./tarea.out "a\landb\landc\landd\lande\landf\landg\landh\landi\landj\landk\landl\landm\landn\lando\landp\landq\landr\lands\landt\landu\landv\landw\landx\landy\landz"
